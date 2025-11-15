@@ -1,0 +1,39 @@
+﻿# Node / JS
+node_modules/
+
+# Composer / PHP
+vendor/
+composer.lock
+
+# Configurações locais / secrets
+.env
+.env.local
+config.php
+config/*.php
+
+# Ficheiros de base de dados / dumps
+*.sql
+*.sqlite
+*.db
+
+# Uploads / ficheiros gerados
+/uploads/
+tmp/
+cache/
+logs/
+*.log
+
+# IDE / sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Build / OS
+dist/
+build/
+.sass-cache/
+
+# Ficheiros do AMPPS / XAMPP (se aplicável)
+/ampps/
+/xampp/
