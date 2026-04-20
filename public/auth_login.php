@@ -1,0 +1,39 @@
+<?php
+require_once "../includes/bd_connect.php";
+session_start();
+header('Content-Type: application/json');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'] ?? '';
+    $senha = $_POST['senha'] ?? '';
+
+    if (empty($email) || empty($senha)) {
+        echo json_encode(["sucesso" => false, "mensagem" => "Preencha todos os campos."]);
+        exit;
+    }
+
+    try {
+        $stmt = $conn->prepare("SELECT id_cliente, nome, password FROM clientes WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        if ($user = $resultado->fetch_assoc()) {
+        
+            if (password_verify($senha, $user['password'])) {
+                
+                // Guardar dados na sessão
+                $_SESSION['user_id'] = $user['id_cliente'];
+                $_SESSION['user_nome'] = $user['nome'];
+
+                echo json_encode(["sucesso" => true]);
+            } else {
+                echo json_encode(["sucesso" => false, "mensagem" => "Senha incorreta."]);
+            }
+        } else {
+            echo json_encode(["sucesso" => false, "mensagem" => "Utilizador não encontrado."]);
+        }
+    } catch (Exception $e) {
+        echo json_encode(["sucesso" => false, "mensagem" => "Erro no servidor."]);
+    }
+}

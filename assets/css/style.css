@@ -59,7 +59,7 @@ input[type="text"] {
     border-radius: 6px;
 }
 
-.ver-mais {
+.selecionar-produto {
     padding: 12px 20px;
     border: none;
     background: #ddd;
@@ -67,11 +67,30 @@ input[type="text"] {
     cursor: pointer;
 }
 
-.btn-search {
+.selecionar-orcamento{
     padding: 12px 30px;
     border: none;
-    background: #0088ff;
-    color: white;
+    background: #ffffff;
+    color: rgb(0, 0, 0);
+    border-radius: 6px;
+    cursor: pointer;
+    align-self: center;
+}
+.selecionar-quantidade{
+    padding: 12px 30px;
+    border: none;
+    background: #ffffff;
+    color: rgb(0, 0, 0);
+    border-radius: 6px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.inputs{
+    padding: 12px 30px;
+    border: none;
+    background: #ffffff;
+    color: rgb(0, 0, 0);
     border-radius: 6px;
     cursor: pointer;
     align-self: center;

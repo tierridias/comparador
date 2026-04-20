@@ -1,12 +1,16 @@
 <?php
 $host = 'localhost';
-$user = 'comparador';
-$password = 'Senha123!';
-$db   = 'comparador';
+$user = 'root';      // Utilizador padrão
+$password = 'mysql'; // Senha padrão do Ampps (se não mudaste)
+$db   = 'comparador'; // O nome da base de dados que criaste no phpMyAdmin
 
-$conn = new mysqli($host, $user, $password, $db);
-if ($conn->connect_error) {
-    die("Erro na ligação: " . $conn->connect_error);
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+try {
+    $conn = new mysqli($host, $user, $password, $db);
+    $conn->set_charset("utf8mb4");
+} catch (Exception $e) {
+    // Se ainda der erro, vamos mostrar o erro REAL para sabermos o que é
+    die("Erro real: " . $e->getMessage()); 
 }
-$conn->set_charset("utf8mb4");
 ?>

@@ -13,17 +13,18 @@
         <nav>
             <a class="btn btn-outline" href="index.php">Voltar</a>
             <a class="btn btn-primary" href="register.php">Registar</a>
-        </nav>
+        </nav>+
+
     </header>
 
     <section class="form-section">
         <h1>Entrar na Conta</h1>
         <form>
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="exemplo@email.com">
+            <input type="email" id="email" name="email" placeholder="exemplo@email.com" required>
 
             <label for="senha">Palavra-passe</label>
-            <input type="password" id="senha" placeholder="••••••••">
+            <input type="password" id="senha" name="senha" placeholder="••••••••" required>
 
             <button type="submit" class="btn btn-primary">Entrar</button>
         </form>
