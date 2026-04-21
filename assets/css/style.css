@@ -95,3 +95,49 @@ input[type="text"] {
     cursor: pointer;
     align-self: center;
 }
+.card.selecionado {
+    border: 3px solid #28a745 !important;
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    background-color: #f8fff9;
+}
+
+.btn-escolher {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    background: #444;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-escolher:hover { background: #222; }
+
+#barra-checkout {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+    display: none;
+    text-align: center;
+    z-index: 1000;
+}
+
+.btn-comprar {
+    background: #28a745;
+    color: white;
+    padding: 12px 40px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}

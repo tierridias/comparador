@@ -12,7 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+    // ALTERAÇÃO: Usar PASSWORD_ARGON2ID em vez de DEFAULT
+    $senhaHash = password_hash($senha, PASSWORD_ARGON2ID);
 
     try {
         $stmt = $conn->prepare("INSERT INTO clientes (nome, email, password) VALUES (?, ?, ?)");

@@ -19,12 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $resultado = $stmt->get_result();
 
         if ($user = $resultado->fetch_assoc()) {
-        
+            // password_verify deteta automaticamente se é Argon2 ou BCrypt
             if (password_verify($senha, $user['password'])) {
                 
-                // Guardar dados na sessão
-                $_SESSION['user_id'] = $user['id_cliente'];
-                $_SESSION['user_nome'] = $user['nome'];
+                // PADRONIZAÇÃO DAS SESSÕES:
+                $_SESSION['id_cliente'] = $user['id_cliente'];
+                $_SESSION['nome_cliente'] = $user['nome']; // Alterado de user_nome para nome_cliente
 
                 echo json_encode(["sucesso" => true]);
             } else {
