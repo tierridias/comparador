@@ -2,39 +2,49 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>Comparador — Registo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta — Comparador</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body>
-<main class="container">
-    <header>
-        <div class="brand">Comparador</div>
-        <nav>
-            <a class="btn btn-outline" href="index.php">Voltar</a>
-            <a class="btn btn-primary" href="login.php">Entrar</a>
-        </nav>
-    </header>
+<body class="auth-page">
 
-    <section class="form-section">
-        <h1>Criar Conta</h1>
-        <form>
-            <label for="nome">Nome Completo</label>
-            <input type="text" id="nome" placeholder="Ex: Tierri Dias">
+    <a href="index.php" class="back-button">← Voltar</a>
 
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="exemplo@email.com">
+    <main class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Criar Conta</h1>
+            </div>
+            
+            <form id="registerForm" action="processar_registo.php" method="POST">
+                <div class="input-group">
+                    <input type="text" id="nome" name="nome" placeholder="Nome Completo" required>
+                </div>
 
-            <label for="senha">Palavra-passe</label>
-            <input type="password" id="senha" placeholder="••••••••">
+                <div class="input-group">
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
 
-            <label for="senha_conf">Confirmar Palavra-passe</label>
-            <input type="password" id="senha_conf" placeholder="••••••••">
+                <div class="input-group">
+                    <input type="password" id="senha" name="senha" placeholder="Palavra-passe" required>
+                </div>
 
-            <button type="submit" class="btn btn-primary">Registar</button>
-        </form>
-    </section>
-</main>
-<script src="../assets/js/register.js"></script>
+                <div class="input-group">
+                    <input type="password" id="senha_conf" name="senha_conf" placeholder="Confirmar Palavra-passe" required>
+                </div>
+
+                <button type="submit" class="btn-cta auth-btn">
+                    Criar Conta
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <div class="divider"></div>
+                <p>Já tens uma conta? <a href="login.php">Faz login aqui</a></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/register.js"></script>
 </body>
 </html>

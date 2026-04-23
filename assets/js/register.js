@@ -23,8 +23,8 @@ document.querySelector('form').addEventListener('submit', function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.sucesso) {
-            alert("Conta criada com sucesso!");
-            window.location.href = 'login.php';
+            alert("Conta criada! Verifica o teu e-mail no Mailtrap.");
+            window.location.href = 'verificar_conta.php?email=' + encodeURIComponent(email);
         } else {
             alert("Erro: " + data.mensagem);
         }

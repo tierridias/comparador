@@ -2,34 +2,43 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>Comparador — Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar — Comparador</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body>
-<main class="container">
-    <header>
-        <div class="brand">Comparador</div>
-        <nav>
-            <a class="btn btn-outline" href="index.php">Voltar</a>
-            <a class="btn btn-primary" href="register.php">Registar</a>
-        </nav>+
+<body class="auth-page">
 
-    </header>
+    <a href="index.php" class="back-button">← Voltar</a>
 
-    <section class="form-section">
-        <h1>Entrar na Conta</h1>
-        <form>
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="exemplo@email.com" required>
+    <main class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Bem-vindo de volta</h1>
+                <p>Insere os teus dados para aceder à conta.</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
 
-            <label for="senha">Palavra-passe</label>
-            <input type="password" id="senha" name="senha" placeholder="••••••••" required>
+                <div class="input-group">
+                    <input type="password" id="senha" name="senha" placeholder="Palavra-passe" required>
+                </div>
 
-            <button type="submit" class="btn btn-primary">Entrar</button>
-        </form>
-    </section>
-</main>
-<script src="../assets/js/login.js"></script>
+                <button type="submit" class="btn-cta auth-btn">
+                    Entrar na Conta
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <a href="recuperar_pass.php" class="forgot-link">Esqueci-me da senha</a>
+                <div class="divider"></div>
+                <p>Ainda não tens conta? <a href="register.php">Cria uma agora</a></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/login.js"></script>
 </body>
 </html>
