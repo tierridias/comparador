@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // ISTO impede que o link mude!
+            e.preventDefault(); 
             console.log("JS detetou o clique no login!");
 
             const email = document.getElementById('email').value;
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('email', email);
             formData.append('senha', senha);
 
-            fetch('auth_login.php', {
+            fetch('../auth/auth_login.php', {
                 method: 'POST',
                 body: formData
             })

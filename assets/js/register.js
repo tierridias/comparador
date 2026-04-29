@@ -16,14 +16,14 @@ document.querySelector('form').addEventListener('submit', function(e) {
     formData.append('email', email);
     formData.append('senha', senha);
 
-    fetch('auth_register.php', {
+    fetch('../auth/auth_register.php', {
         method: 'POST',
         body: formData
     })
     .then(response => response.json())
     .then(data => {
         if (data.sucesso) {
-            alert("Conta criada! Verifica o teu e-mail no Mailtrap.");
+            alert("Conta criada! Verifica o teu e-mail.");
             window.location.href = 'verificar_conta.php?email=' + encodeURIComponent(email);
         } else {
             alert("Erro: " + data.mensagem);

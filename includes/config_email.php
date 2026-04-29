@@ -9,18 +9,20 @@ require '../lib/PHPMailer/SMTP.php';
 
 function enviarEmail($destinatario, $assunto, $mensagem) {
     $mail = new PHPMailer(true);
-    //$mail->SMTPDebug = 2; // Ativa a saída detalhada de erros
 
     try {
         $mail->isSMTP();
-        $mail->Host       = 'sandbox.smtp.mailtrap.io';
+        $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Port       = 2525;
-        $mail->Username   = '814afe85cfb1c8';
-        $mail->Password   = 'fa1fafc26b763f';
+        $mail->Port       = 587;
+
+        $mail->Username   = 'tierridias123@gmail.com';
+
+        $mail->Password   = 'ewzg wutt bxtj vcpt';
+
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 
-        $mail->setFrom('sistema@comparador.com', 'Comparador PAP');
+        $mail->setFrom('tierridias123@gmail.com', 'Comparador PAP');
         $mail->addAddress($destinatario);
 
         $mail->isHTML(true);
@@ -30,9 +32,9 @@ function enviarEmail($destinatario, $assunto, $mensagem) {
 
         $mail->send();
         return true;
+
     } catch (Exception $e) {
-        // Para debug, se falhar, podes descomentar a linha abaixo:
-        // echo "Erro: {$mail->ErrorInfo}"; 
+        // echo "Erro: {$mail->ErrorInfo}";
         return false;
     }
 }

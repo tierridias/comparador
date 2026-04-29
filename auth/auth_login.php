@@ -1,5 +1,5 @@
 <?php
-require_once "../includes/bd_connect.php";
+require_once __DIR__ . "/../includes/bd_connect.php";
 session_start();
 header('Content-Type: application/json');
 

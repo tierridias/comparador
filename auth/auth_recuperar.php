@@ -1,7 +1,7 @@
 <?php
 date_default_timezone_set('Europe/Lisbon');
-require_once "../includes/bd_connect.php";
-require_once "../includes/config_email.php";
+require_once __DIR__ . "/../includes/bd_connect.php";
+require_once __DIR__ . "/../includes/config_email.php";
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

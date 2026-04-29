@@ -4,7 +4,7 @@ document.getElementById('form-recuperar').addEventListener('submit', function(e)
     const formData = new FormData();
     formData.append('email', email);
 
-    fetch('auth_recuperar.php', {
+    fetch('../auth/auth_recuperar.php', {
         method: 'POST',
         body: formData
     })

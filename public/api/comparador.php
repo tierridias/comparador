@@ -2,7 +2,6 @@
 require_once "../../includes/bd_connect.php";
 session_start();
 
-// Ativar exibição de erros para debug
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -14,14 +13,12 @@ if (!isset($_SESSION['id_cliente']) || !isset($_POST['id_orcamento'])) {
 $id_orcamento = intval($_POST['id_orcamento']);
 $orcamento_maximo = floatval($_POST['orcamento_maximo']);
 
-// 1. Inicializar o array de carrinhos (CRUCIAL para evitar os Warnings que tinhas)
 $carrinhos = [
     'Mais Barato' => ['total' => 0, 'itens' => []],
     'Mais Rapido' => ['total' => 0, 'itens' => []],
     'Equilibrado' => ['total' => 0, 'itens' => []]
 ];
 
-// 2. Procurar os itens do orçamento na BD
 $sql = "SELECT p.nome_produto, i.quantidade, p.id_produto 
         FROM itens_orcamento i 
         INNER JOIN produtos p ON i.id_produto = p.id_produto 
@@ -32,7 +29,6 @@ $stmt->bind_param("i", $id_orcamento);
 $stmt->execute();
 $resultado = $stmt->get_result();
 
-// Função para consultar as APIs locais
 function consultarAPI($url) {
     $options = ["http" => ["method" => "GET", "header" => "User-Agent: PHP\r\n", "timeout" => 3]];
     $context = stream_context_create($options);
@@ -40,7 +36,6 @@ function consultarAPI($url) {
     return $json ? json_decode($json, true) : null;
 }
 
-// Função para distribuir o pedido entre lojas com base no stock disponível
 function distribuirPorLojas($quantidade_pedida, $opcoes, $criterio) {
     usort($opcoes, function($a, $b) use ($criterio) {
         return $a[$criterio] <=> $b[$criterio];
@@ -67,7 +62,6 @@ function distribuirPorLojas($quantidade_pedida, $opcoes, $criterio) {
     return $divisao;
 }
 
-// 3. Processar cada produto do carrinho
 while ($item = $resultado->fetch_assoc()) {
     $nome_url = urlencode(trim($item['nome_produto']));
     $qtd_total = $item['quantidade'];
@@ -129,7 +123,7 @@ while ($item = $resultado->fetch_assoc()) {
 
     <main class="compare-container">
         <div class="selection-header">
-            <h1>🧩 Resultados da Comparação</h1>
+            <h1>🧩 Comparação</h1>
         </div>
 
         <div class="grid-estrategias">
@@ -138,9 +132,10 @@ while ($item = $resultado->fetch_assoc()) {
                     $excede = ($dados['total'] > $orcamento_maximo);
                     $id_limpo = str_replace(' ', '-', $tipo);
                 ?>
-                <div class="strategy-card <?php echo $excede ? 'exceeds' : ''; ?>" 
-                     id="card-<?php echo $id_limpo; ?>" 
-                     onclick="selecionarPlano('<?php echo $id_limpo; ?>', '<?php echo $tipo; ?>')">
+                <div class="strategy-card <?php echo $excede ? 'exceeds' : ''; ?>"
+                    id="card-<?php echo $id_limpo; ?>"
+                    data-total="<?php echo $dados['total']; ?>" 
+                    onclick="selecionarPlano('<?php echo $id_limpo; ?>', '<?php echo $tipo; ?>')">
                     
                     <div class="strategy-header">
                         <h2><?php echo $tipo; ?></h2>
@@ -188,34 +183,73 @@ while ($item = $resultado->fetch_assoc()) {
 
     <div id="barra-checkout" class="checkout-bar">
         <div class="checkout-bar-content">
+            <p>Restante: <strong id="orcamento-restante">-</strong></p>
             <p>Estratégia: <strong id="nome-plano-selecionado">-</strong></p>
             <button class="btn-cta" onclick="finalizarCompra()">Confirmar Encomenda</button>
         </div>
     </div>
 
     <script>
+    let orcamentoMaximo = <?php echo $orcamento_maximo; ?>;
+    let orcamentoRestante = 0;
+    let totalSelecionado = 0;
+
     function selecionarPlano(idCard, nomeReal) {
-        document.querySelectorAll('.strategy-card').forEach(card => card.classList.remove('selected'));
-        document.getElementById('card-' + idCard).classList.add('selected');
-        
-        const barra = document.getElementById('barra-checkout');
-        barra.classList.add('visible');
-        document.getElementById('nome-plano-selecionado').innerText = nomeReal;
+
+    const card = document.getElementById('card-' + idCard);
+
+    totalSelecionado = parseFloat(card.getAttribute('data-total'));
+
+    orcamentoRestante = orcamentoMaximo - totalSelecionado;
+
+    document.querySelectorAll('.strategy-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+
+    const barra = document.getElementById('barra-checkout');
+    barra.classList.add('visible');
+
+    document.getElementById('nome-plano-selecionado').innerText = nomeReal;
+
+    const restanteEl = document.getElementById('orcamento-restante');
+
+    if (orcamentoRestante >= 0) {
+        restanteEl.innerText = orcamentoRestante.toFixed(2) + " €";
+        restanteEl.style.color = "green";
+    } else {
+        restanteEl.innerText = orcamentoRestante.toFixed(2) + " € (excedido)";
+        restanteEl.style.color = "red";
     }
+}
 
     function finalizarCompra() {
-        const idOrcamento = <?php echo $id_orcamento; ?>;
-        // ... (o teu fetch mantém-se igual)
-        fetch('api/finalizar_pedido.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'id_orcamento=' + idOrcamento
+
+    const idOrcamento = <?php echo $id_orcamento; ?>;
+
+    fetch('finalizar_pedido.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            id_orcamento: idOrcamento,
+            preco_total: totalSelecionado
         })
-        .then(() => {
-            alert("Pedido confirmado!");
+    })
+    .then(r => r.json())
+    .then(data => {
+
+        if (data.sucesso) {
             window.location.href = "../sucesso.php";
-        });
-    }
+        } else {
+            alert("Erro: " + data.erro);
+        }
+
+    })
+    .catch(err => {
+        alert("Erro de ligação ao servidor");
+        console.log(err);
+    });
+}
     </script>
 </body>
 </html>

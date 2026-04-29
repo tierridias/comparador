@@ -14,7 +14,7 @@ document.getElementById('form-redefinir').addEventListener('submit', function(e)
     formData.append('token', token);
     formData.append('senha', senha);
 
-    fetch('auth_redefinir.php', {
+    fetch('../auth/auth_redefinir.php', {
         method: 'POST',
         body: formData
     })

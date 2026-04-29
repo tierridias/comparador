@@ -8,7 +8,7 @@ document.getElementById('form-verify').addEventListener('submit', function(e) {
     formData.append('email', email);
     formData.append('codigo', codigo);
 
-    fetch('auth_verify.php', {
+    fetch('../auth/auth_verify.php', {
         method: 'POST',
         body: formData
     })
@@ -16,7 +16,7 @@ document.getElementById('form-verify').addEventListener('submit', function(e) {
     .then(data => {
         if (data.sucesso) {
             alert("Sucesso! Conta ativada.");
-            window.location.href = 'login.php'; // Só agora é que vai para o login!
+            window.location.href = 'login.php';
         } else {
             alert("Erro: " + data.mensagem);
         }
