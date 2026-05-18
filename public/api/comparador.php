@@ -38,7 +38,7 @@ function consultarAPI($url) {
 
 function distribuirPorLojas($quantidade_pedida, $opcoes, $criterio) {
     usort($opcoes, function($a, $b) use ($criterio) {
-        return $a[$criterio] <=> $b[$criterio];
+        return $a[$criterio] <=> $b[$criterio];  
     });
 
     $divisao = [];
@@ -48,7 +48,7 @@ function distribuirPorLojas($quantidade_pedida, $opcoes, $criterio) {
         if ($restante <= 0) break;
         $unidades_a_comprar = min($restante, $opcao['stock']);
         
-        if ($unidades_a_comprar > 0) {
+        if ($unidades_a_comprar > 0) { 
             $divisao[] = [
                 'loja' => $opcao['loja'],
                 'qtd' => $unidades_a_comprar,
@@ -62,7 +62,7 @@ function distribuirPorLojas($quantidade_pedida, $opcoes, $criterio) {
     return $divisao;
 }
 
-while ($item = $resultado->fetch_assoc()) {
+while ($item = $resultado->fetch_assoc()) { 
     $nome_url = urlencode(trim($item['nome_produto']));
     $qtd_total = $item['quantidade'];
 
@@ -193,32 +193,31 @@ while ($item = $resultado->fetch_assoc()) {
     let orcamentoMaximo = <?php echo $orcamento_maximo; ?>;
     let orcamentoRestante = 0;
     let totalSelecionado = 0;
+    let planosValidos = [];
 
     function selecionarPlano(idCard, nomeReal) {
 
-    const card = document.getElementById('card-' + idCard);
+    const cardId = 'card-' + idCard;
+
+    if (!planosValidos.includes(cardId)) {
+        alert("Não tens orçamento para este plano!");
+        return;
+    }
+
+    const card = document.getElementById(cardId);
 
     totalSelecionado = parseFloat(card.getAttribute('data-total'));
-
     orcamentoRestante = orcamentoMaximo - totalSelecionado;
 
     document.querySelectorAll('.strategy-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
 
-    const barra = document.getElementById('barra-checkout');
-    barra.classList.add('visible');
-
+    document.getElementById('barra-checkout').classList.add('visible');
     document.getElementById('nome-plano-selecionado').innerText = nomeReal;
 
     const restanteEl = document.getElementById('orcamento-restante');
-
-    if (orcamentoRestante >= 0) {
-        restanteEl.innerText = orcamentoRestante.toFixed(2) + " €";
-        restanteEl.style.color = "green";
-    } else {
-        restanteEl.innerText = orcamentoRestante.toFixed(2) + " € (excedido)";
-        restanteEl.style.color = "red";
-    }
+    restanteEl.innerText = orcamentoRestante.toFixed(2) + " €";
+    restanteEl.style.color = "green";
 }
 
     function finalizarCompra() {
@@ -250,6 +249,31 @@ while ($item = $resultado->fetch_assoc()) {
         console.log(err);
     });
 }
+function calcularPlanosValidos() {
+
+    planosValidos = [];
+
+    document.querySelectorAll('.strategy-card').forEach(card => {
+
+        const total = parseFloat(card.getAttribute('data-total'));
+
+        if (total <= orcamentoMaximo) {
+            planosValidos.push(card.id);
+        } else {
+            card.classList.add('exceeds');
+            card.style.pointerEvents = "none";
+        }
+
+    });
+
+    if (planosValidos.length === 1) {
+        const unico = planosValidos[0].replace("card-", "");
+        const nome = document.querySelector(`#${planosValidos[0]} h2`).innerText;
+
+        selecionarPlano(unico, nome);
+    }
+}
+window.onload = calcularPlanosValidos;
     </script>
 </body>
 </html>
